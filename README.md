@@ -50,6 +50,11 @@ SELECT DISTINCT
 [PRODUCTLINE] 
 FROM [exp].[sales_data_sample$]
 where [PRODUCTLINE] ='Motorcycles';
+
+--- Number of orders that were cancelled
+
+ SELECT COUNT(*) FROM [exp].[sales_data_sample$]
+ WHERE STATUS ='Cancelled'
 ```
 
 ### Data analysis 
@@ -60,6 +65,24 @@ where [PRODUCTLINE] ='Motorcycles';
  SELECT FORMAT(ROUND(SUM([SALES]),2), 'C0') AS Total_revenue FROM [exp].[sales_data_sample$]
  WHERE [STATUS] != 'Cancelled';
 
+--Total revenue IN 2003
+
+ SELECT FORMAT(ROUND(SUM([SALES]),2), 'C0') AS Total_revenue FROM [exp].[sales_data_sample$]
+ WHERE [STATUS] != 'Cancelled' AND
+ [YEAR_ID] = 2003
+
+--Total revenue IN 2004
+
+ SELECT FORMAT(ROUND(SUM([SALES]),2), 'C0') AS Total_revenue FROM [exp].[sales_data_sample$]
+ WHERE [STATUS] != 'Cancelled' AND
+ [YEAR_ID] = 2004
+  
+  --Total revenue IN 2005
+
+ SELECT FORMAT(ROUND(SUM([SALES]),2), 'C0') AS Total_revenue FROM [exp].[sales_data_sample$]
+ WHERE [STATUS] != 'Cancelled' AND
+ [YEAR_ID] = 2005
+ 
  ---- SALES BY PRODUCTLINE
  
 SELECT  [PRODUCTLINE], ROUND (SUM([SALES]),0) AS Sales
@@ -68,7 +91,7 @@ WHERE [STATUS] != 'Cancelled'
 GROUP BY [PRODUCTLINE]
 ORDER BY Sales DESC;
 
---SALES BY DEALSIZE (Classic car, Vintage car, Motorcycle)
+--SALES BY DEALSIZE 
  
 SELECT [DEALSIZE], FORMAT(ROUND(SUM([SALES]),0),'C') AS Sales
 FROM [exp].[sales_data_sample$]
@@ -76,7 +99,7 @@ WHERE [STATUS] != 'Cancelled'
 GROUP BY [DEALSIZE]
 ORDER BY Sales DESC;
 
---SALES BY COUNTRY (USA made the highest sales, Spain,France)
+--SALES BY COUNTRY 
 
 SELECT  [COUNTRY], SUM([SALES]) AS Sales
 FROM [exp].[sales_data_sample$]
@@ -108,7 +131,7 @@ FROM Pre_RFM;
 SELECT *
 FROM  #r_f_m;
 
---- The result gotten was grouped into four segment according to the Order made, Sales and Interval between customers' purchase
+--- The result gotten was grouped into four segments according to the Orders made, Sales and Interval between customers' purchase
 date and company's last transaction date
 
 WITH Rfm AS (SELECT #r_f_m.*,
@@ -211,13 +234,38 @@ select distinct OrderNumber, stuff((select ',' + PRODUCTLINE
 **Customer's Segment**
 
 
+
+![image](https://user-images.githubusercontent.com/109418747/188099492-928fd4fb-8a7d-4546-8190-797cc3b88365.png)
+
+
+![image](https://user-images.githubusercontent.com/109418747/188100467-7627e3bf-7a9c-446d-a828-cf905ce26c56.png)
+
+
 ![image](https://user-images.githubusercontent.com/109418747/187944114-74528e96-36f0-4904-ac87-ab593216ba87.png)
 
 
-![image](https://user-images.githubusercontent.com/109418747/187996030-7f4efdca-c002-4481-86a6-f7988e31cc30.png)
+![image](https://user-images.githubusercontent.com/109418747/188101072-4e95219e-2f87-4dce-b4f0-699224c8d9ff.png)
 
 
+![image](https://user-images.githubusercontent.com/109418747/188088472-480d9bb1-2cee-4419-bc5f-7122b2184c2c.png)
 
-### Findings and recommendation
+
+### Findings and Recommendations
 
 Total revenue generated was $9,838,141.
+
+The best selling dealsize is the medium size (60.48% of total revenue) while the large size made lowest contribution of 13.24%.
+
+Classic cars made the highest revenue for the company ($3,860,373) that is 39.2%, followed by Vintage cars and Motorcycle. Trains generated the least revenue of $221,161. Compaign and advertisement of other products should be prioritized to reduce reliance on classics cars as source of income.
+
+The top three countries in terms of revenue generated are USA, Spain and France accordingly. Sales in Ireland is very poor as the company only generated 0.58% revenue.
+Marketing and advertizing strategy should be improved in countries like Ireland, Belgium,Spain, Philippine,Switzerland and Sweden and also note reasons why there are no much sales in those regions.
+
+Loyal and lost customers are 16.3%(15) of the total customers, low and high value customers are 15.22%(14) and Medium value customers are 36.96%(34) of all customers. 
+The number of Loyal and high value customers are low and this might cause the company to lose more sales, the reasons why customers are lost should be know as 15 customers are lost out of 92. Low customers should be communicated to and given more care so that the company won't lose them. Product's values should be well explained to all customers.
+
+Vintage cars and ships are product that are mostly bought together, these products should advert together since there is high possibility of buying them together.
+
+
+
+ 
